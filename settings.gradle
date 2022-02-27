@@ -1,2 +1,2 @@
-include 'desktop', 'core', 'android', 'BaseGameUtils'
+include 'core', 'android'
 rootProject.name='Four Dots'

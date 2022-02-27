@@ -38,11 +38,6 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.example.games.basegameutils.GameHelper;
-import com.leonard.fourdots.util.IabHelper;
-import com.leonard.fourdots.util.IabResult;
-import com.leonard.fourdots.util.Inventory;
-import com.leonard.fourdots.util.Purchase;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -262,13 +257,6 @@ public class AndroidLauncher extends AndroidApplication implements
             Log.w(TAG, "handleSignInResult:error", e);
             updateUI(null);
         }
-    }
-
-
-    boolean verifyDeveloperPayload(Purchase p) {
-        String payload = p.getDeveloperPayload();
-
-        return true;
     }
 
     String returnDeveloperPayload() {

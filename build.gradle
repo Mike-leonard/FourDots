@@ -32,7 +32,7 @@ allprojects {
     }
 }
 
-project(":desktop") {
+/*project(":desktop") {
     apply plugin: "java"
 
 
@@ -42,15 +42,15 @@ project(":desktop") {
         implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         implementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     }
-}
+}*/
 
 project(":core") {
     apply plugin: "java"
 
 
     dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile fileTree(dir: '../libs', include: '*.jar')
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation fileTree(dir: '../libs', include: '*.jar')
     }
 }
 
@@ -77,7 +77,7 @@ project(":android") {
         implementation 'com.google.android.gms:play-services-auth:20.1.0'
         //implementation 'com.google.android.gms:play-services-games:22.0.1'
 
-        implementation project(":BaseGameUtils")
+      /*  implementation project(":BaseGameUtils")*/
 
     }
 }
