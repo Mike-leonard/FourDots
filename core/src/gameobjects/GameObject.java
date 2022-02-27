@@ -22,9 +22,7 @@ import helpers.FlatColors;
 import tweens.SpriteAccessor;
 import tweens.VectorAccessor;
 
-/**
- * Created by ManuGil on 10/03/15.
- */
+
 public class GameObject {
     public GameWorld world;
     private float x, y;

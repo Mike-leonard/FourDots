@@ -19,9 +19,6 @@ import helpers.AssetLoader;
 import helpers.FlatColors;
 import ui.MuteButton;
 
-/**
- * Created by ManuGil on 09/03/15.
- */
 
 public class GameWorld {
 

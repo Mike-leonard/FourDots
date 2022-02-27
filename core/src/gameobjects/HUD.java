@@ -13,9 +13,7 @@ import gameworld.GameWorld;
 import helpers.AssetLoader;
 import ui.Text;
 
-/**
- * Created by ManuGil on 26/04/15.
- */
+
 public class HUD extends GameObject {
 
     public Text scoreText, bestText;

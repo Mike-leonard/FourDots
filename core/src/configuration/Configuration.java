@@ -1,9 +1,5 @@
 package configuration;
 
-/**
- * Created by ManuGil on 09/03/15.
- */
-
 public class Configuration {
 
     public static final String GAME_NAME = "Four Dots";
@@ -24,22 +20,22 @@ public class Configuration {
     public static final String PRODUCT_ID = "removeads";
 
     //LEADERBOARDS
-    public static final String LEADERBOARD_HIGHSCORE = "CggIiNPRvm8QAhAB";
-    public static final String LEADERBOARD_GAMESPLAYED = "CggIiNPRvm8QAhAC";
+    public static final String LEADERBOARD_HIGHSCORE = "CgkIg-mOo9ceEAIQAA";
+    public static final String LEADERBOARD_GAMESPLAYED = "CgkIg-mOo9ceEAIQAQ";
 
     //ACHIEVEMENTS IDS Points
-    public static final String ACHIEVEMENT_5_P = "CggIiNPRvm8QAhAD";
-    public static final String ACHIEVEMENT_10_P = "CggIiNPRvm8QAhAE";
-    public static final String ACHIEVEMENT_25_P = "CggIiNPRvm8QAhAF";
-    public static final String ACHIEVEMENT_50_P = "CggIiNPRvm8QAhAG";
-    public static final String ACHIEVEMENT_100_P = "CggIiNPRvm8QAhAH";
-    public static final String ACHIEVEMENT_200_P = "CggIiNPRvm8QAhAI";
+    public static final String ACHIEVEMENT_5_P = "CgkIg-mOo9ceEAIQCQ";
+    public static final String ACHIEVEMENT_10_P = "CgkIg-mOo9ceEAIQCw";
+    public static final String ACHIEVEMENT_25_P = "CgkIg-mOo9ceEAIQDA";
+    public static final String ACHIEVEMENT_50_P = "CgkIg-mOo9ceEAIQCg";
+    public static final String ACHIEVEMENT_100_P = "CgkIg-mOo9ceEAIQDQ";
+    public static final String ACHIEVEMENT_200_P = "CgkIg-mOo9ceEAIQDg";
     //GAMES PLAYED
-    public static final String ACHIEVEMENT_10_GP = "CggIiNPRvm8QAhAJ";
-    public static final String ACHIEVEMENT_25_GP = "CggIiNPRvm8QAhAK";
-    public static final String ACHIEVEMENT_50_GP = "CggIiNPRvm8QAhAL";
-    public static final String ACHIEVEMENT_100_GP = "CggIiNPRvm8QAhAM";
-    public static final String ACHIEVEMENT_200_GP = "CggIiNPRvm8QAhAN";
+    public static final String ACHIEVEMENT_10_GP = "CgkIg-mOo9ceEAIQAg";
+    public static final String ACHIEVEMENT_25_GP = "CgkIg-mOo9ceEAIQAw";
+    public static final String ACHIEVEMENT_50_GP = "CgkIg-mOo9ceEAIQBA";
+    public static final String ACHIEVEMENT_100_GP = "CgkIg-mOo9ceEAIQCA";
+    public static final String ACHIEVEMENT_200_GP = "CgkIg-mOo9ceEAIQBw";
 
     //COLORS
     public static final String COLOR_BACKGROUND_COLOR = "#ecf0f1";

@@ -1,8 +1,5 @@
 package configuration;
 
-/**
- * Created by ManuGil on 23/04/15.
- */
 
 public class Settings {
 

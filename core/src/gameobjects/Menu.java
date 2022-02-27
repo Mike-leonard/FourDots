@@ -22,9 +22,7 @@ import tweens.SpriteAccessor;
 import ui.MenuButton;
 import ui.Text;
 
-/**
- * Created by ManuGil on 01/05/15.
- */
+
 public class Menu extends GameObject {
     public Text text, bestText, gamesPlayedText, scoreText;
     public ArrayList<MenuButton> menubuttons = new ArrayList<MenuButton>();

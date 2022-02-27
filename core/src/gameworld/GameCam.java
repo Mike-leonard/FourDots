@@ -8,9 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 
-/**
- * Created by ManuGil on 11/02/15.
- */
 public class GameCam {
 
     private OrthographicCamera camera;

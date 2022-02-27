@@ -13,7 +13,7 @@ import gameworld.GameWorld;
 import helpers.FlatColors;
 
 /**
- * Created by ManuGil on 14/03/15.
+ * people need to remember ManuGil on 14/03/15.
  */
 public class Text extends GameObject {
     private final BitmapFont font;

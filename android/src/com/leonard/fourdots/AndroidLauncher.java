@@ -16,6 +16,9 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -23,14 +26,25 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.example.games.basegameutils.GameHelper;
 import com.leonard.fourdots.util.IabHelper;
 import com.leonard.fourdots.util.IabResult;
 import com.leonard.fourdots.util.Inventory;
 import com.leonard.fourdots.util.Purchase;
+
+import org.jetbrains.annotations.NotNull;
 
 import MainGame.ActionResolver;
 import MainGame.FourGame;
@@ -38,27 +52,29 @@ import configuration.Configuration;
 import helpers.AssetLoader;
 
 public class AndroidLauncher extends AndroidApplication implements
-        ActionResolver, GameHelper.GameHelperListener {
+        ActionResolver /*, GameHelper.GameHelperListener*/ {
 
-    private static final String AD_UNIT_ID_BANNER = Configuration.AD_UNIT_ID_BANNER;
-    private static final String AD_UNIT_ID_INTERSTITIAL = Configuration.AD_UNIT_ID_INTERSTITIAL;
+    //private static final String AD_UNIT_ID_BANNER = Configuration.AD_UNIT_ID_BANNER;
+    //private static final String AD_UNIT_ID_INTERSTITIAL = Configuration.AD_UNIT_ID_INTERSTITIAL;
     private final static int REQUEST_CODE_UNUSED = 9002;
+    private final static int REQUEST_CODE_USED = 9003;
 
     private static String GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=";
-    protected AdView adView;
+    //protected AdView adView;
     protected View gameView;
-    AdView admobView;
-    private InterstitialAd interstitialAd;
-    private GameHelper _gameHelper;
+    //AdView admobView;
+    //private InterstitialAd interstitialAd;
+    //private GameHelper _gameHelper;
 
     //IAP
     private static final String TAG = "IAP";
-    boolean mIsPremium = false;
-    static final String SKU_PREMIUM = Configuration.PRODUCT_ID;
+    //boolean mIsPremium = false;
+    //static final String SKU_PREMIUM = Configuration.PRODUCT_ID;
     static final int RC_REQUEST = 10001;
-    IabHelper mHelper;
-    private boolean removeAdsVersion = false;
+    //IabHelper mHelper;
+    //private boolean removeAdsVersion = false;
     SharedPreferences prefs;
+    private GoogleSignInClient mGoogleSignInClient;
 
 
     @Override
@@ -88,15 +104,23 @@ public class AndroidLauncher extends AndroidApplication implements
                 FrameLayout.LayoutParams.MATCH_PARENT);
         layout.setLayoutParams(params);
 
-        admobView = createAdView();
+        //admobView = createAdView();
 
         View gameView = createGameView(cfg);
         layout.addView(gameView);
-        layout.addView(admobView);
-        _gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
-        _gameHelper.enableDebugLog(false);
+        //layout.addView(admobView);
+       /* _gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
+        _gameHelper.enableDebugLog(false);*/
 
-        GameHelper.GameHelperListener gameHelperListener = new GameHelper.GameHelperListener() {
+
+        /* Working with google sign in API */
+        /* This is Initialization Steps */
+        GoogleSignInOptions gso =     new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
+                .requestScopes(Games.SCOPE_GAMES_SNAPSHOTS)
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+       /* GameHelper.GameHelperListener gameHelperListener = new GameHelper.GameHelperListener() {
             @Override
             public void onSignInSucceeded() {
             }
@@ -107,11 +131,11 @@ public class AndroidLauncher extends AndroidApplication implements
         };
 
 
-        _gameHelper.setup(gameHelperListener);
+        _gameHelper.setup(gameHelperListener);*/
 
         setContentView(layout);
-        startAdvertising(admobView);
 
+/*        startAdvertising(admobView);
         MobileAds.initialize(this);
         interstitialAd = new InterstitialAd(this);
         interstitialAd.setAdUnitId(AD_UNIT_ID_INTERSTITIAL);
@@ -125,12 +149,12 @@ public class AndroidLauncher extends AndroidApplication implements
             public void onAdClosed() {
             }
         });
-        showOrLoadInterstital();
+        showOrLoadInterstital();*/
 
     }
 
     // for purchuse hasan
-    private void loadIAPstuff() {
+    /*private void loadIAPstuff() {
         String base64EncodedPublicKey = Configuration.ENCODED_PUBLIC_KEY;// CONSTRUCT_YOUR_KEY_AND_PLACE_IT_HERE
         Log.d(TAG, "Creating IAB helper.");
         mHelper = new IabHelper(AndroidLauncher.this, base64EncodedPublicKey);
@@ -164,10 +188,10 @@ public class AndroidLauncher extends AndroidApplication implements
                 mHelper.queryInventoryAsync(mGotInventoryListener);
             }
         });
-    }
+    }*/
 
 
-    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+    /*IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
         @Override
         public void onQueryInventoryFinished(final IabResult result,
                                              final Inventory inventory) {
@@ -195,7 +219,7 @@ public class AndroidLauncher extends AndroidApplication implements
             Log.d(TAG, "User is " + (removeAdsVersion ? "PREMIUM" : "NOT PREMIUM"));
             Log.d(TAG, "Initial inventory query finished; enabling main UI.");
         }
-    };
+    };*/
 
 
     @Override
@@ -203,10 +227,10 @@ public class AndroidLauncher extends AndroidApplication implements
             data) {
         Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + ","
                 + data);
-        if (mHelper == null)
-            return;
+       /* if (mHelper == null)
+            return;*/
 
-        // Pass on the activity result to the helper for handling
+       /* // Pass on the activity result to the helper for handling
         if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
             // not handled, so handle it ourselves (here's where you'd
             // perform any handling of activity results not related to in-app
@@ -215,8 +239,31 @@ public class AndroidLauncher extends AndroidApplication implements
             _gameHelper.onActivityResult(requestCode, resultCode, data);
         } else {
             Log.d(TAG, "onActivityResult handled by IABUtil.");
+        }*/
+        super.onActivityResult(requestCode, resultCode, data);
+        //_gameHelper.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_REQUEST) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
         }
     }
+
+    // [START handleSignInResult]
+    private void handleSignInResult(@Nullable Task<GoogleSignInAccount> completedTask) {
+        Log.d(TAG, "handleSignInResult:" + completedTask.isSuccessful());
+
+        try {
+            // Signed in successfully, show authenticated U
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            updateUI(account);
+        } catch (ApiException e) {
+            // Signed out, show unauthenticated UI.
+            Log.w(TAG, "handleSignInResult:error", e);
+            updateUI(null);
+        }
+    }
+
 
     boolean verifyDeveloperPayload(Purchase p) {
         String payload = p.getDeveloperPayload();
@@ -229,7 +276,7 @@ public class AndroidLauncher extends AndroidApplication implements
         return payload;
     }
 
-    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+   /* IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
         public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
             Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
 
@@ -257,10 +304,10 @@ public class AndroidLauncher extends AndroidApplication implements
 
             }
         }
-    };
+    };*/
 
 
-    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
+/*    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
         public void onConsumeFinished(Purchase purchase, IabResult result) {
             Log.d(TAG, "Consumption finished. Purchase: " + purchase + ", result: " + result);
 
@@ -280,7 +327,7 @@ public class AndroidLauncher extends AndroidApplication implements
             }
             Log.d(TAG, "End consumption flow.");
         }
-    };
+    };*/
 
 
     void complain(String message) {
@@ -295,20 +342,20 @@ public class AndroidLauncher extends AndroidApplication implements
         Log.d(TAG, "Showing alert dialog: " + message);
     }
 
-    void saveData() {
+ /*   void saveData() {
         SharedPreferences.Editor spe = getPreferences(MODE_PRIVATE).edit();
         spe.putBoolean("ads", removeAdsVersion);
         spe.commit();
         AssetLoader.setAds(removeAdsVersion);
         Log.d(TAG, "Saved data: tank = " + String.valueOf(removeAdsVersion));
-    }
+    }*/
 
-    void loadData() {
+   /* void loadData() {
         SharedPreferences sp = getPreferences(MODE_PRIVATE);
         removeAdsVersion = sp.getBoolean("ads", false);
         removeAdsVersion = AssetLoader.getAds();
         Log.d(TAG, "Loaded data: tank = " + String.valueOf(removeAdsVersion));
-    }
+    }*/
 
     public void onUpgradeAppButtonClicked(View arg0) {
         Log.d(TAG,
@@ -322,8 +369,8 @@ public class AndroidLauncher extends AndroidApplication implements
     */
         String payload = returnDeveloperPayload();
 
-        mHelper.launchPurchaseFlow(this, SKU_PREMIUM, RC_REQUEST,
-                mPurchaseFinishedListener, payload);
+        /*mHelper.launchPurchaseFlow(this, SKU_PREMIUM, RC_REQUEST,
+                mPurchaseFinishedListener, payload);*/
     }
 
    /* private void googleBannerAds () {
@@ -342,7 +389,7 @@ public class AndroidLauncher extends AndroidApplication implements
         }
     }*/
 
-    private AdView createAdView() {
+/*    private AdView createAdView() {
 
         MobileAds.initialize(this);
 
@@ -364,7 +411,7 @@ public class AndroidLauncher extends AndroidApplication implements
         }
         adView.setBackgroundColor(Color.TRANSPARENT);
         return adView;
-    }
+    }*/
 
     private View createGameView(AndroidApplicationConfiguration cfg) {
         gameView = initializeForView(new FourGame(this), cfg);
@@ -383,40 +430,48 @@ public class AndroidLauncher extends AndroidApplication implements
     @Override
     public void onResume() {
         super.onResume();
-        if (adView != null)
-            adView.resume();
+        /*if (adView != null)
+            adView.resume();*/
     }
 
     @Override
     public void onPause() {
-        if (adView != null)
-            adView.pause();
+        /*if (adView != null)
+            adView.pause();*/
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
-        if (adView != null)
-            adView.destroy();
+       /* if (adView != null)
+            adView.destroy();*/
         super.onDestroy();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-       // _gameHelper.onStart(this);
+        //_gameHelper.onStart(this);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (account != null && GoogleSignIn.hasPermissions(account, new Scope(Scopes.DRIVE_APPFOLDER))) {
+            updateUI(account);
+        } else {
+            updateUI(null);
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         //_gameHelper.onStop();
+        signOut();
     }
 
 
+    /* this lines of code depends on ActionResolver implements  */
     @Override
     public void showOrLoadInterstital() {
-        if (!removeAdsVersion) {
+/*        if (!removeAdsVersion) {
             try {
                 runOnUiThread(new Runnable() {
                     public void run() {
@@ -433,9 +488,10 @@ public class AndroidLauncher extends AndroidApplication implements
                 });
             } catch (Exception e) {
             }
-        }
+        }*/
     }
 
+    /* this lines of code depends on ActionResolver implements  */
     @Override
     public void signIn() {
         try {
@@ -443,6 +499,8 @@ public class AndroidLauncher extends AndroidApplication implements
                 // @Override
                 public void run() {
                     //_gameHelper.beginUserInitiatedSignIn();
+                    Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                    startActivityForResult(signInIntent, RC_REQUEST);
                 }
             });
         } catch (Exception e) {
@@ -451,6 +509,7 @@ public class AndroidLauncher extends AndroidApplication implements
         }
     }
 
+    /* this lines of code depends on ActionResolver implements  */
     @Override
     public void signOut() {
         try {
@@ -458,6 +517,14 @@ public class AndroidLauncher extends AndroidApplication implements
                 // @Override
                 public void run() {
                     //_gameHelper.signOut();
+
+                    mGoogleSignInClient.signOut().addOnCompleteListener(
+                            AndroidLauncher.this, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                            updateUI(null);
+                        }
+                    });
                 }
             });
         } catch (Exception e) {
@@ -466,69 +533,138 @@ public class AndroidLauncher extends AndroidApplication implements
         }
     }
 
+    // [START updateUI]
+    private void updateUI(@Nullable GoogleSignInAccount account) {
+        if (account != null) {
+        /*    mStatusTextView.setText(getString(R.string.signed_in_fmt, account.getDisplayName()));
+
+            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);*/
+        } else {
+           /* mStatusTextView.setText(R.string.signed_out);
+
+            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);*/
+        }
+    }
+
+    // [START revokeAccess]
+    private void revokeAccess() {
+        mGoogleSignInClient.revokeAccess().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // [START_EXCLUDE]
+                        updateUI(null);
+                        // [END_EXCLUDE]
+                    }
+                });
+    }
+
+    /* this lines of code depends on ActionResolver implements  */
     @Override
     public void rateGame() {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(GOOGLE_PLAY_URL)));
     }
 
+    /* this lines of code depends on ActionResolver implements  */
     @Override
     public boolean isSignedIn() {
         //return _gameHelper.isSignedIn();
-        return false;
+        //return false;
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (account != null && GoogleSignIn.hasPermissions(account, new Scope(Scopes.DRIVE_APPFOLDER))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    @Override
+    /*This lines of code relates GameHelper class*/
+    /*@Override
     public void onSignInFailed() {
     }
 
     @Override
     public void onSignInSucceeded() {
-    }
+    }*/
 
+    /* this lines of code depends on ActionResolver implements  */
     @Override
     public void submitScore(long score) {
         if (isSignedIn() == true) {
           /*  Games.Leaderboards.submitScore(_gameHelper.getApiClient(),
                     Configuration.LEADERBOARD_HIGHSCORE, score);*/
+
+
+            Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this))
+                    .submitScore(Configuration.LEADERBOARD_HIGHSCORE, score);
         } else {
-            // signIn();
+            signIn();
         }
     }
 
+    /* this lines of code depends on ActionResolver implements  */
     @Override
     public void submitGamesPlayed(long score) {
         if (isSignedIn() == true) {
 /*            Games.Leaderboards.submitScore(_gameHelper.getApiClient(),
                     Configuration.LEADERBOARD_GAMESPLAYED, score);*/
+
+            Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this))
+                    .submitScore(Configuration.LEADERBOARD_GAMESPLAYED, score);
+
         } else {
-            // signIn();
+            signIn();
         }
     }
-
+    /* this lines of code depends on ActionResolver implements  */
     @Override
     public void showScores() {
-        if (isSignedIn() == true)
-            startActivityForResult(
+        if (isSignedIn() == true) {
+            /*startActivityForResult(
                     Games.Leaderboards.getAllLeaderboardsIntent(_gameHelper
-                            .getApiClient()), REQUEST_CODE_UNUSED);
+                            .getApiClient()), REQUEST_CODE_UNUSED);*/
             // Games.Leaderboards.getLeaderboardIntent( _gameHelper.getApiClient(),
             // C.LEADERBOARD_ID),REQUEST_CODE_UNUSED)
+
+            Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this))
+                    .getLeaderboardIntent(Configuration.LEADERBOARD_HIGHSCORE)
+                    .addOnSuccessListener(new OnSuccessListener<Intent>() {
+                        @Override
+                        public void onSuccess(Intent intent) {
+                            startActivityForResult(intent, REQUEST_CODE_UNUSED);
+                        }
+                    });
+        }
         else {
             signIn();
         }
     }
 
+    /* this lines of code depends on ActionResolver implements  */
     @Override
     public void showAchievement() {
-        if (isSignedIn() == true)
-            startActivityForResult(
+        if (isSignedIn() == true) {
+        /*    startActivityForResult(
                     Games.Achievements.getAchievementsIntent(_gameHelper
-                            .getApiClient()), REQUEST_CODE_UNUSED);
+                            .getApiClient()), REQUEST_CODE_UNUSED);   */
+            Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this))
+                    .getAchievementsIntent()
+                    .addOnSuccessListener(new OnSuccessListener<Intent>() {
+                        @Override
+                        public void onSuccess(Intent intent) {
+                            startActivityForResult(intent, REQUEST_CODE_USED);
+                        }
+                    });
+
+        }
         else {
             signIn();
         }
     }
 
+    /* this lines of code depends on ActionResolver implements  */
     @Override
     public boolean shareGame(String msg) {
         Intent sendIntent = new Intent();
@@ -540,20 +676,24 @@ public class AndroidLauncher extends AndroidApplication implements
 
     }
 
+    /* this lines of code depends on ActionResolver implements  */
     @Override
     public void unlockAchievementGPGS(String string) {
         if (isSignedIn()) {
             //Games.Achievements.unlock(_gameHelper.getApiClient(), string);
+            Games.getAchievementsClient(this, GoogleSignIn.getLastSignedInAccount(this))
+                    .unlock(string);
         }
     }
 
+    /* this lines of code depends on ActionResolver implements  */
     @Override
     public void viewAd(boolean view) {
         if (view) {
             try {
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        admobView.setVisibility(View.VISIBLE);
+                        //admobView.setVisibility(View.VISIBLE);
                     }
                 });
             } catch (Exception e) {
@@ -563,7 +703,7 @@ public class AndroidLauncher extends AndroidApplication implements
             try {
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        admobView.setVisibility(View.INVISIBLE);
+                       // admobView.setVisibility(View.INVISIBLE);
                     }
                 });
             } catch (Exception e) {
@@ -571,6 +711,7 @@ public class AndroidLauncher extends AndroidApplication implements
         }
     }
 
+    /* this lines of code depends on ActionResolver implements  */
     @Override
     public void iapClick() {
         String payload = returnDeveloperPayload();
@@ -579,6 +720,7 @@ public class AndroidLauncher extends AndroidApplication implements
     }
 
 
+    /* this lines of code depends on ActionResolver implements  */
     @Override
     public void toast(final String text) {
         handler.post(new Runnable() {

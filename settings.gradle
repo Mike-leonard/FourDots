@@ -1,1 +1,2 @@
 include 'desktop', 'core', 'android', 'BaseGameUtils'
+rootProject.name='Four Dots'

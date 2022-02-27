@@ -1,7 +1,6 @@
 buildscript {
     repositories {
         mavenCentral()
-        /*maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }*/
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
@@ -27,8 +26,6 @@ allprojects {
 
     repositories {
         mavenCentral()
-      /*  maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "https://oss.sonatype.org/content/repositories/releases/" }*/
         maven { url 'https://jitpack.io' }
         jcenter()
         google()
@@ -71,10 +68,14 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
         implementation fileTree(dir: '../libs', include: '*.jar')
-        implementation 'com.google.android.gms:play-services-games:8.4.0'
-        implementation 'com.google.android.gms:play-services:8.4.0'
-        implementation 'com.google.android.gms:play-services-ads:8.4.0'
+        implementation 'org.jetbrains:annotations:16.0.2'
+        implementation 'com.google.android.gms:play-services-games:22.0.1'
+        //implementation 'com.google.android.gms:play-services:12.0.1'
+        implementation 'com.google.android.gms:play-services-ads:20.5.0'
         implementation 'com.android.support:multidex:1.0.1'
+        //implementation 'com.google.android.gms:play-services-auth:8.4.0'
+        implementation 'com.google.android.gms:play-services-auth:20.1.0'
+        //implementation 'com.google.android.gms:play-services-games:22.0.1'
 
         implementation project(":BaseGameUtils")
 

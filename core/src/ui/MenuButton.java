@@ -11,9 +11,7 @@ import gameobjects.GameObject;
 import gameworld.GameWorld;
 import tweens.Value;
 
-/**
- * Created by ManuGil on 14/03/15.
- */
+
 public class MenuButton extends GameObject {
 
     private Color color;

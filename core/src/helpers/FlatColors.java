@@ -4,9 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 
 import gameworld.GameWorld;
 
-/**
- * Created by ManuGil on 10/03/15.
- */
+
 public class FlatColors {
 
     public static final Color RED = GameWorld.parseColor("#e74c3c", 1f);

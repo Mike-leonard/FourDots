@@ -5,9 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import configuration.Configuration;
 import gameworld.GameWorld;
 
-/**
- * Created by ManuGil on 10/03/15.
- */
+
 public class Background extends GameObject {
     public Background(GameWorld world, float x, float y, float width, float height,
                       TextureRegion texture) {

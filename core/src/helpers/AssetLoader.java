@@ -11,9 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import configuration.Configuration;
 
-/**
- * Created by ManuGil on 09/03/15.
- */
+
 public class AssetLoader {
 
     public static Texture logoTexture, dotT, squareT, buttonsT, buttonBackT, dotsT, backgroundT, titleT, hudButtonsT;

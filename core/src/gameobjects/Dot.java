@@ -15,9 +15,7 @@ import gameworld.GameWorld;
 import helpers.AssetLoader;
 import tweens.Value;
 
-/**
- * Created by ManuGil on 29/04/15.
- */
+
 public class Dot extends GameObject {
 
     private float angle;

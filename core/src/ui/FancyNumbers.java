@@ -6,9 +6,7 @@ import aurelienribon.tweenengine.TweenManager;
 import tweens.Value;
 import tweens.ValueAccessor;
 
-/**
- * Created by ManuGil on 14/03/15.
- */
+
 public class FancyNumbers {
 
     private Value number = new Value();

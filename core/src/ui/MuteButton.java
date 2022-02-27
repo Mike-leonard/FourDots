@@ -14,9 +14,7 @@ import tweens.SpriteAccessor;
 import tweens.Value;
 import tweens.ValueAccessor;
 
-/**
- * Created by ManuGil on 15/01/15.
- */
+
 public class MuteButton {
 
     private float x, y, width, height;

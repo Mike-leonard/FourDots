@@ -15,9 +15,7 @@ import configuration.Settings;
 import gameworld.GameWorld;
 import tweens.SpriteAccessor;
 
-/**
- * Created by ManuGil on 29/04/15.
- */
+
 public class Ball extends GameObject {
     private TweenCallback cbReset;
     private int type;
